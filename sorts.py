@@ -2,10 +2,10 @@ import time
 from math import ceil
 from typing import List, Any
 
-from prettytable import PrettyTable
+from utils import create_table, fill_table, TableItem, print_table
 
 
-class Sort(object):
+class Sort(TableItem):
     mas: List
 
     def __init__(self, name, sort_function):
@@ -24,7 +24,7 @@ class Sort(object):
             status = "Passed"
             for i in range(1, len(array)):
                 if array[i] < array[i - 1]:
-                    status = "Failed"
+                    status = "Failed on position {pos}".format(pos=i)
             return status
 
         t = time.process_time()
@@ -100,33 +100,23 @@ def run_sorts(sort_by: str, mas: List[int], reverse=False, show=False):
         - other value will be ignored.
     """
 
+    # print(linear_search(mas, 1))
+
     if show:
         print("source: {0}".format(mas))
 
-    Sort.n = len(mas)
     Sort.mas = mas
-    sorts = []
-    table = PrettyTable()
+    sort = []
 
-    table.title = 'Sorts results'
-    table.field_names = ['Sort name', 'n', 'time (seconds)', 'status']
+    sort_table = create_table("Sorts results", ['Name', 'N', 'Time (seconds)', 'Status'])
 
-    sorts.append(Sort("insertion sort", insertion_sort))
-    sorts.append(Sort("Merge sort", merge_sort))
+    sort.append(Sort("insertion sort", insertion_sort))
+    sort.append(Sort("Merge sort", merge_sort))
 
-    for sort in sorts:
-        table.add_row(sort.row(show))
+    fill_table(sort_table, sort, show)
 
-    print_table(reverse, sort_by, table)
-
-
-def print_table(reverse, sort_by, table):
-    if sort_by != "none":
-        if sort_by == "time":
-            sort_by = "time (seconds)"
-        elif sort_by == "name":
-            sort_by = "Sort name"
-        table.sortby = sort_by
-        table.reversesort = reverse
-
-    print(table)
+    print_table(sort_table, sort_by, reverse)
+    # for sort in sorts:
+    #     table.add_row(sort.row(show))
+    #
+    # print_table(reverse, sort_by, table)
