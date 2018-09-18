@@ -1,5 +1,5 @@
 import time
-from typing import List, Any
+from typing import List, Any, Optional, Union
 
 import sorts
 from utils import TableItem, create_table, fill_table, print_table
@@ -47,34 +47,47 @@ def linear_search(array: List[Any], element: Any) -> Any:
     return None
 
 
-def binary_search_recursive(array: List[Any], element: Any) -> int:
+def binary_search_recursive(array: List[Any], element: Any) -> Union[Optional[int], None]:
     def search(left_b: int, right_b: int):
-
+        # Divide list by half.
         mid = left_b + (right_b - left_b) // 2
-
+        # if search areas intersected -> nothing was found.
+        if left_b >= right_b:
+            return None
+        # if element found -> return index.
         if array[mid] == element:
             return mid
+        # Because we have already sorted array
+        # We can suggest where is the element
+        # And search in suggested part.
         elif array[mid] > element:
-            return search(left_b, mid)
+            return search(left_b, mid - 1)
         else:
-            return search(mid, right_b)
+            return search(mid + 1, right_b)
 
     left = 0
     right = len(array)
     return search(left, right)
 
 
-def binary_search_iterative(array: List[Any], element: Any) -> int:
+def binary_search_iterative(array: List[Any], element: Any) -> Union[Optional[int], None]:
     left = 0
     right = len(array)
-    while True:
+    # if search areas intersected -> nothing was found.
+    while left < right:
+        # Divide list by half.
         mid = left + (right - left) // 2
+        # if element found -> return index.
         if element == array[mid]:
             return mid
+        # Because we have already sorted array
+        # We can suggest where is the element
+        # And search in suggested part.
         elif element <= array[mid]:
             right = mid
         else:
-            left = mid
+            left = mid + 1
+    return None
 
 
 def run_searches(sort_by: str, mas: List[int], element: int, reverse=False, show=False):
