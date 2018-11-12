@@ -1,10 +1,9 @@
 import random
 
-import searches
-import sorts
+from arrays_algos.runs import run_sorts, run_searches
 
 if __name__ == "__main__":
     mas = random.sample(range(1, 100000), 8000)
-    sorts.run_sorts("Name", mas, show=False)
+    run_sorts("Name", mas, show=False)
     search_element = mas[2]
-    searches.run_searches("Name", mas, search_element)
+    run_searches("Name", mas)

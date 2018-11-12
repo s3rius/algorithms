@@ -1,39 +1,5 @@
-import time
 from math import ceil
-from typing import List, Any
-
-from utils import create_table, fill_table, TableItem, print_table
-
-
-class Sort(TableItem):
-    mas: List
-
-    def __init__(self, name, sort_function):
-        self.sort_name = name
-        self.sort_function = sort_function
-        self.n = len(self.mas)
-
-    def row(self, show: bool) -> List[Any]:
-        """
-        Method to test sort function and create table row.
-        :param show: if True - sort results will be printed before result table.
-        :return: table row.
-        """
-
-        def check_sort(array):
-            status = "Passed"
-            for i in range(1, len(array)):
-                if array[i] < array[i - 1]:
-                    status = "Failed on position {pos}".format(pos=i)
-            return status
-
-        t = time.process_time()
-        mas = self.sort_function(self.mas)
-        elapsed_time = time.process_time() - t
-        if show:
-            print("{name}: {array}".format(name=self.sort_name, array=mas))
-
-        return [self.sort_name, self.n, elapsed_time, check_sort(mas)]
+from typing import List
 
 
 def insertion_sort(massive: List):
@@ -184,39 +150,3 @@ def merge_insertion_sort(mas: List):
         part2 = insertion_sort(part1)
     # Merge parts together.
     return merge(part1, part2)
-
-
-def run_sorts(sort_by: str, mas: List[int], reverse=False, show=False):
-    """
-    Prints all sorts results.
-    :param show: if True - sort results will be printed before result table.
-    :param reverse: reverse sort
-    :param mas: array of int elements to sort.
-    :param sort_by: parameter to sort printed tables. Possible values:
-        - time
-        - name
-        - other value will be ignored.
-    """
-
-    # print(linear_search(mas, 1))
-
-    if show:
-        print("source: {0}".format(mas))
-
-    Sort.mas = mas
-    sort = []
-
-    sort_table = create_table("Sorts results", ['Name', 'N', 'Time (seconds)', 'Status'])
-
-    sort.append(Sort("Insertion sort", insertion_sort))
-    sort.append(Sort("Insertion sort with binary search", binary_insertion_sort))
-    sort.append(Sort("Merge sort", merge_sort))
-    sort.append(Sort("Merge sort with insertion", merge_insertion_sort))
-
-    fill_table(sort_table, sort, show)
-
-    print_table(sort_table, sort_by, reverse)
-    # for sort in sorts:
-    #     table.add_row(sort.row(show))
-    #
-    # print_table(reverse, sort_by, table)
