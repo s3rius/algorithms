@@ -1,21 +1,10 @@
-from typing import List, Any
+from typing import List
 
 from prettytable import PrettyTable
 
-
-class TableItem(object):
-    """
-    Class needs to be implemented if you want to wrap object in table row.
-    """
-
-    def row(self, show: bool) -> List[Any]:
-        """
-        Method to represent object for inserting in row.
-        :param show: If true - You can print something before creating tables.
-        :return List with values.
-        :rtype: List[Any]
-        """
-        return []
+from arrays_algos.Types import Search, Sort
+from utils import FunType
+from utils.TableItem import TableItem
 
 
 def create_table(title: str, columns: List[str]) -> PrettyTable:
@@ -35,3 +24,22 @@ def print_table(table: PrettyTable, sort: str, reverse: bool):
     table.sortby = sort
     table.reversesort = reverse
     print(table)
+
+
+class Manager(object):
+    registered_functions = {
+        FunType.sort: [],
+        FunType.search: []
+    }
+
+    def register(self, name, f_type):
+        def decor(func):
+            if f_type == FunType.search:
+                self.registered_functions[f_type].append(Search(name, func))
+            elif f_type == FunType.sort:
+                self.registered_functions[f_type].append(Sort(name, func))
+            else:
+                raise Exception("Can't find that kind of functions: '{t}'. Use FunType enum.")
+            return func
+
+        return decor

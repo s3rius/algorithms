@@ -1,7 +1,13 @@
 from math import ceil
 from typing import List
 
+from utils import FunType
+from utils.tables import Manager
 
+man = Manager()
+
+
+@man.register("Insertion sort", FunType.sort)
 def insertion_sort(massive: List):
     # Copying array.
     array = massive[:]
@@ -23,6 +29,7 @@ def insertion_sort(massive: List):
     return array
 
 
+@man.register("Insertion sort (Binary)", FunType.sort)
 def binary_insertion_sort(massive: List):
     def search(el, left_b: int, right_b: int):
         """
@@ -64,6 +71,7 @@ def binary_insertion_sort(massive: List):
     return array
 
 
+@man.register('Merge sort', FunType.sort)
 def merge_sort(massive: List):
     def merge(part1: List, part2: List) -> List:
         """
@@ -104,6 +112,7 @@ def merge_sort(massive: List):
         return massive
 
 
+@man.register('Insertion sort (Merge modified)', FunType.sort)
 def merge_insertion_sort(mas: List):
     def merge(part1: List, part2: List) -> List:
         """
