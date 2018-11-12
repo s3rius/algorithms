@@ -1,12 +1,10 @@
 from typing import List, Any, Optional, Union
 
 from utils import FunType
-from utils.tables import Manager
-
-man = Manager()
+from utils.tables import register
 
 
-@man.register("Linear search", FunType.search)
+@register("Linear search", FunType.search)
 def linear_search(array: List[Any], element: Any) -> Any:
     """
     Function returns requested element index if such element exists.
@@ -20,7 +18,7 @@ def linear_search(array: List[Any], element: Any) -> Any:
     return None
 
 
-@man.register("Binary search (Recursive)", FunType.search)
+@register("Binary search (Recursive)", FunType.search)
 def binary_search_recursive(array: List[Any], element: Any) -> Union[Optional[int], None]:
     def search(left_b: int, right_b: int):
         # Divide list by half.
@@ -44,7 +42,7 @@ def binary_search_recursive(array: List[Any], element: Any) -> Union[Optional[in
     return search(left, right)
 
 
-@man.register("Binary search (Iterative)", FunType.search)
+@register("Binary search (Iterative)", FunType.search)
 def binary_search_iterative(array: List[Any], element: Any) -> Union[Optional[int], None]:
     left = 0
     right = len(array)

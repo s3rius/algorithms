@@ -1,5 +1,5 @@
-from utils import FunType
-from utils.tables import create_table, fill_table, print_table, Manager
+from utils import FunType, registered_functions
+from utils.tables import create_table, fill_table, print_table
 
 
 def run_sorts(sort_by: str, reverse=False, show=False):
@@ -14,7 +14,7 @@ def run_sorts(sort_by: str, reverse=False, show=False):
     """
 
     sort_table = create_table("Sorts results", ['Name', 'N', 'Time (seconds)', 'Status'])
-    rf = Manager.registered_functions[FunType.sort]
+    rf = registered_functions[FunType.sort]
     fill_table(sort_table, rf, show)
 
     print_table(sort_table, sort_by, reverse)
@@ -29,7 +29,7 @@ def run_searches(sort_by: str, reverse=False, show=False):
     """
 
     search_table = create_table("Searches results", ['Name', 'N', 'Time (seconds)', 'Status'])
-    rf = Manager.registered_functions[FunType.search]
+    rf = registered_functions[FunType.search]
 
     fill_table(search_table, rf, show)
 

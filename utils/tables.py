@@ -3,7 +3,7 @@ from typing import List
 from prettytable import PrettyTable
 
 from arrays_algos.Types import Search, Sort
-from utils import FunType
+from utils import FunType, registered_functions
 from utils.TableItem import TableItem
 
 
@@ -26,20 +26,14 @@ def print_table(table: PrettyTable, sort: str, reverse: bool):
     print(table)
 
 
-class Manager(object):
-    registered_functions = {
-        FunType.sort: [],
-        FunType.search: []
-    }
+def register(name, f_type):
+    def decor(func):
+        if f_type == FunType.search:
+            registered_functions[f_type].append(Search(name, func))
+        elif f_type == FunType.sort:
+            registered_functions[f_type].append(Sort(name, func))
+        else:
+            raise Exception("Can't find that kind of functions: '{t}'. Use FunType enum.")
+        return func
 
-    def register(self, name, f_type):
-        def decor(func):
-            if f_type == FunType.search:
-                self.registered_functions[f_type].append(Search(name, func))
-            elif f_type == FunType.sort:
-                self.registered_functions[f_type].append(Sort(name, func))
-            else:
-                raise Exception("Can't find that kind of functions: '{t}'. Use FunType enum.")
-            return func
-
-        return decor
+    return decor
